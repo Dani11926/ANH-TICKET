@@ -1,4 +1,10 @@
-# 🎫 ANH-Ticket:
+Certamente. Aggiungo l'informazione sul prototipo nella sezione che elenca le risorse del progetto.
+
+Ecco la versione aggiornata del README:
+
+***
+
+# 🎫 ANH-Ticket: Piattaforma di Gestione Ticket Multi-Tenant (SaaS)
 
 Benvenuti nel progetto **ANH-Ticket**, una piattaforma Help Desk di nuova generazione progettata con un modello **Software as a Service (SaaS) Multi-Tenant**.
 
@@ -101,7 +107,7 @@ I **Team** sono l'unità fondamentale di assegnazione (es. "Supporto Livello 1")
 | :--- | :--- | :--- | :--- |
 | **Agente** | Operatore quotidiano, risponde ai clienti, usa le Macro. | Lavora sui ticket assegnati al suo Team. | **No** |
 | **Capo Team** | Fa tutto ciò che fa un Agente, più supervisione operativa del Team. Riceve notifiche di Escalation. | Vede tutti i ticket del suo Team, può riassegnare internamente. | **No** |
-| **Amministratore (Admin)** | Configura l'applicazione (Team, SLA, Automazioni, Organizzazioni). | **Non può lavorare sui ticket** né modificarne lo stato. | **Sì (Totale)** |
+| **Amministratore (Admin)** | Configura l'applicazione (SLA, Automazioni, Team, Clienti). | **Non può lavorare sui ticket** né modificarne lo stato. | **Sì (Totale)** |
 
 ### 6.3 Gestione Flusso Errori (Riassegnazione)
 
@@ -124,3 +130,13 @@ La piattaforma si compone di tre interfacce principali:
 3.  **Portale Clienti (Front End):**
     * **Utenti:** **Clienti Finali** (Utenti B2C e B2B).
     * **Funzione:** Creazione nuovi ticket (con Classificazione Categoria/Sotto-Categoria) e consultazione dello storico personale/Organizzazione.
+
+---
+
+## 🔗 Risorse del Progetto
+
+| Risorsa | Descrizione | Link |
+| :--- | :--- | :--- |
+| **Prototipo Funzionale (Figma/Marvel)** | Visualizzazione interattiva dell'interfaccia utente. | [https://anh-helpdesk-suite.lovable.app](https://anh-helpdesk-suite.lovable.app) |
+| **Documentazione Tecnica** | Dettagli sull'implementazione del backend e API. | *(Da definire)* |
+| **Repository Git** | Codice sorgente del progetto. | *(Da definire)* |
