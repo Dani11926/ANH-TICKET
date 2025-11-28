@@ -1,9 +1,3 @@
-Certamente. Aggiungo l'informazione sul prototipo nella sezione che elenca le risorse del progetto.
-
-Ecco la versione aggiornata del README:
-
-***
-
 # 🎫 ANH-Ticket: Piattaforma di Gestione Ticket Multi-Tenant (SaaS)
 
 Benvenuti nel progetto **ANH-Ticket**, una piattaforma Help Desk di nuova generazione progettata con un modello **Software as a Service (SaaS) Multi-Tenant**.
