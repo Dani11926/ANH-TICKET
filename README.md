@@ -1,130 +1,126 @@
-# ANH-TICKET
+# 🎫 ANH-Ticket:
 
-1. Obiettivo del progetto
-L'obiettivo è creare una piattaforma di Gestione Ticket (Help Desk) Multi-Tenant. Il sistema non serve solo un'unica entità di supporto, ma è progettato come una piattaforma SaaS (Software as a Service) che permette a diverse Aziende Fornitrici (i tuoi clienti diretti) di erogare servizi di assistenza ai propri Clienti Finali.
-Ogni Azienda Fornitrice avrà il proprio ambiente isolato, i propri agenti e i propri clienti, gestendo le richieste in modo centralizzato e strutturato.
-2. Architettura clienti
-Per supportare questo modello, l'architettura si divide in tre livelli gerarchici:
-2.1 Livello Piattaforma (Tu)
-Super Admin: È il gestore della piattaforma (tu). Ha il controllo globale, crea le istanze per le Aziende Fornitrici e gestisce la fatturazione verso di loro. Non vede i ticket specifici dei clienti finali per motivi di privacy, ma monitora l'uso delle risorse.
-2.2 Livello Tenant (Azienda Fornitrice)
-È l'entità che acquista il tuo servizio per fare supporto (es. un'azienda IT, un call center).
-Tenant Admin: L'amministratore dell'Azienda Fornitrice. Configura i propri team, le regole di automazione e gestisce i propri clienti.
-Agente: Il dipendente dell'Azienda Fornitrice che risolve i ticket.
-2.3 Livello Cliente (Destinatario del supporto)
-Sono i clienti dell'Azienda Fornitrice.
-Organizzazione (Cliente B2B): Rappresenta un'azienda che riceve assistenza dal Tenant. (Es. Lo studio legale assistito dall'azienda IT).
-Utente Finale (Requester): La persona fisica che apre il ticket. Può essere un privato (B2C) o un dipendente di un'Organizzazione (B2B).
+Benvenuti nel progetto **ANH-Ticket**, una piattaforma Help Desk di nuova generazione progettata con un modello **Software as a Service (SaaS) Multi-Tenant**.
 
-Logica di Funzionamento:
+L'obiettivo è fornire alle **Aziende Fornitrici (Tenant)** uno strumento potente e isolato per gestire in modo strutturato l'assistenza verso i loro **Clienti Finali**.
 
-Utente B2C (Individuale): Un Utente non associato a un'Organizzazione specifica. Può creare ticket e visualizzare solo lo storico dei propri ticket.
-Utente B2B (Aziendale): Un Utente la cui email (es. @azienda-cliente.it) corrisponde al dominio registrato di un'Organizzazione.
-Associazione Automatica: Quando un utente si registra con un'email aziendale, viene automaticamente collegato alla sua Organizzazione.
+## 1. 🎯 Obiettivo del Progetto
 
-3. Il modello di servizio: piani e SLA
+Creare una **piattaforma di Gestione Ticket (Help Desk) Multi-Tenant** che consenta a diverse Aziende Fornitrici di erogare servizi di assistenza ai propri Clienti Finali, garantendo per ciascuna un **ambiente isolato** con la propria configurazione, i propri Agenti e i propri clienti.
 
-Rimossa la logica a "Piani" (Base/Premium). Il sistema permette all'Azienda Fornitrice di definire i livelli di servizio (SLA) in modo granulare per ogni specifico contratto cliente.
-3.1 Configurazione SLA (Service Level Agreement)
-L'SLA definisce i tempi massimi di Prima Risposta e di Risoluzione. Invece di dipendere da un piano generico, gli SLA sono assegnati:
-SLA di Default: Si applica a tutti i ticket se non diversamente specificato.
-SLA per Organizzazione: L'Azienda Fornitrice può configurare regole specifiche per un cliente importante (es. "Il Cliente X ha un tempo di risposta garantito di 1 ora").
-3.2 Visibilità Ticket (B2B)
-La visibilità dei ticket è una configurazione attivabile per singola Organizzazione:
-Visibilità Personale: L'utente vede solo i propri ticket.
-Visibilità Organizzazione: L'utente (se abilitato) può vedere tutti i ticket aperti dai colleghi della propria azienda. Questa impostazione è gestita dal Tenant Admin nelle scheda dell'Organizzazione.
+## 2. 🏛️ Architettura Clienti: Il Modello a 3 Livelli
+
+L'architettura è la base del modello multi-tenant e si articola in tre livelli gerarchici.
 
 
 
+| Livello | Entità Principale | Ruolo Chiave | Scopo |
+| :--- | :--- | :--- | :--- |
+| **Livello Piattaforma** | Tu (Gestore SaaS) | **Super Admin** | Controllo globale, creazione istanze Tenant e gestione fatturazione. **Non vede i ticket operativi.** |
+| **Livello Tenant** | Azienda Fornitrice (Cliente SaaS) | **Tenant Admin / Agente** | Fornisce supporto, configura il proprio ambiente, gestisce team e automazioni. |
+| **Livello Cliente** | Destinatario del Supporto | **Organizzazione / Utente Finale** | Apre i ticket e riceve l'assistenza. |
 
-4. Il Ticket 
-Il Ticket è l'oggetto centrale del sistema. È il record digitale di una singola richiesta o problema.
+### Logica di Funzionamento B2B/B2C
 
-4.1 Creazione Ticket
-Il sistema accetta ticket da più canali:
-Email: Un'email inviata a un indirizzo monitorato (es. supporto@) crea automaticamente un ticket.
-Modulo Pubblico: Un form "Contattaci" sul sito web, che non richiede login.
-Portale Clienti: Un'area riservata (con login) dove l'Utente può aprire un ticket e vedere il proprio storico.
-4.2 Stati del Ticket
-Ogni ticket si muove attraverso un ciclo di vita definito da stati chiari:
-Nuovo: Appena creato, in attesa di essere classificato o assegnato.
-Aperto: Assegnato a un Agente, che ci sta lavorando attivamente.
-In Attesa: In attesa di una risposta o di un'azione da parte del cliente (il tempo di SLA si ferma).
-Regola Aggiuntiva: Il sistema chiude automaticamente il ticket se il cliente non risponde entro un tempo definito (es. 7 giorni) dallo stato "In Attesa".
-Risolto: L'Agente ha fornito la soluzione.
-Regola di Riapertura: Se il cliente risponde a un ticket nello stato Risolto, lo stato torna automaticamente su Aperto per la riattivazione.
-Chiuso: Il caso è archiviato (spesso automaticamente dopo X giorni dallo stato "Risolto").
-Regola di Archiviazione: Se il cliente risponde a un ticket nello stato Chiuso, il sistema deve notificare l'utente che deve aprire un nuovo ticket ("Follow-up").
-4.3 Classificazione dei servizi
-Per evitare la complessità di un sistema ITSM completo, ma permettere comunque di gestire "servizi specifici", l'applicazione utilizza una Classificazione Strutturata.
-Come Funziona: Quando un Utente apre un ticket dal portale, deve compilare dei campi dropdown obbligatori:
-Categoria: Il macro-argomento (es. "Supporto Tecnico", "Fatturazione", "Richiesta Commerciale").
-Sotto-Categoria: Un elenco dinamico basato sulla Categoria (es. "PC Lento", "Reset Password", "Errore Fattura").
-Scopo: Questi campi permettono ai Trigger di instradare automaticamente e con precisione il ticket al team giusto.
-Il Fallback (La Rete di Sicurezza): Per l'utente che "non si ritrova", la Categoria include sempre l'opzione "Altro / Non Specificato". Un Trigger specifico intercetterà questi ticket e li assegnerà a una coda speciale chiamata "Triage", dove un Agente li classificherà manualmente prima di inoltrarli.
+* **Utente B2C (Individuale):** Utente non associato a un'Organizzazione. Vede solo lo storico dei **propri** ticket.
+* **Utente B2B (Aziendale):** Utente associato a un'Organizzazione. L'associazione avviene **automaticamente** tramite la corrispondenza del dominio email aziendale (`@dominio.it`) con l'Organizzazione registrata dal Tenant Admin.
 
+---
 
+## 3. 🛡️ Modello di Servizio e SLA Granulari
 
+Il sistema si basa sulla definizione di **Service Level Agreement (SLA)** configurabili a livello granulare.
 
+| Configurazione SLA | Descrizione |
+| :--- | :--- |
+| **SLA di Default** | Si applica a tutti i ticket se non diversamente specificato. |
+| **SLA per Organizzazione** | Permette al Tenant Admin di definire tempi specifici di **Prima Risposta** e **Risoluzione** per singoli clienti B2B importanti. |
 
+### Visibilità Ticket per le Organizzazioni (B2B)
 
+Questa è una configurazione attivabile per singola Organizzazione, gestita dal Tenant Admin:
 
+* **Visibilità Personale:** L'utente vede solo i propri ticket.
+* **Visibilità Organizzazione:** L'utente (se abilitato) può vedere tutti i ticket aperti dai colleghi della propria azienda/Organizzazione.
 
+---
 
+## 4. 📝 Il Ticket: Oggetto Centrale
 
+Il Ticket è il record digitale di una singola richiesta e segue un ciclo di vita rigoroso.
 
-5. Automazione del sistema 
-Questa è la logica che fa risparmiare tempo, garantisce gli SLA e rende il sistema "intelligente". È composta da tre elementi:
+### 4.1 Canali di Creazione
 
-Nome Regola
-Tipo di Esecuzione
-Scopo
-Esempio (Logica IF/THEN)
-Trigger
-Istantanea (Azione immediata dopo un evento, es. creazione/aggiornamento ticket) 
-Instradamento e Prioritizzazione 
-SE Categoria = "Fatturazione" E Piano Cliente = "Premium" ALLORA Assegna a Team "Amministrazione VIP" 
-Automazione
-Basata sul Tempo (Eseguita a intervalli regolari, es. ogni ora) 
-Monitoraggio SLA e Escalation 
-SE Stato = "Aperto" E Piano = "Premium" E Ore Trascorse > 2 ALLORA Imposta Priorità = "Urgente" E Notifica Capo Team 
-Macro
-Manuale (Azione dell'Agente con 1 clic) 
-Efficienza e Risposte Standard 
-Macro "Dati Mancanti": Imposta Stato = "In Attesa" E Invia risposta predefinita "Ciao, abbiamo bisogno di..." 58
+* **Email:** Invio a un indirizzo monitorato (es. `supporto@`).
+* **Modulo Pubblico:** Form "Contattaci" senza necessità di login.
+* **Portale Clienti:** Area riservata con login (consigliata per storici e Classificazione).
 
-6. Il personale di supporto
-6.1 Team
-I Team sono il cuore dell'assegnazione. Un ticket non viene quasi mai assegnato a una persona, ma a un Team (es. "Supporto Livello 1", "Fatturazione", "Team Triage"). Gli Agenti disponibili "pescano" i ticket dalla coda del loro Team.
-6.2 Ruoli del Personale Interno
-Il personale è diviso in tre ruoli gerarchici:
-Agente (Membro del Team):
-È l'operatore quotidiano.
-Appartiene a uno o più Team.
-Lavora sui ticket assegnati al suo Team, risponde ai clienti, usa le Macro e aggiorna gli stati.
-Permesso Aggiuntivo: Può riassegnare un ticket verso un altro Team se si rende conto di un errore di instradamento (vedi Sezione 6.3).
-Non può configurare il sistema.
-Capo Team (Team Leader):
-È un "Agente con superpoteri" limitati al suo Team.
-Fa tutto ciò che fa un Agente.
-In più: Può vedere tutti i ticket del suo Team, riassegnarli manualmente tra i suoi membri.
-Riceve le notifiche di Escalation dalle Automazioni per il suo Team.
-Il suo ruolo è di supervisione operativa della coda del suo Team. Non è tenuto a monitorare le code degli altri Team.
-Non può configurare il sistema (non è un Admin).
-Amministratore (Admin):
-È il "Super Utente" che configura l'applicazione.
-Gestisce la fatturazione, i Piani di Servizio e le Organizzazioni dei clienti.
-Crea e gestisce i Team e invita gli Agenti e i Capi Team.
-Crea e modifica tutte le regole del Motore di Automazione (Trigger, Automazioni, Macro).
-NON può lavorare sui ticket, rispondere ai clienti, o modificare lo stato di un ticket. Il suo accesso è limitato alle funzionalità di configurazione e reportistica di alto livello.
-6.3 Gestione Flusso Errori (Riassegnazione Agenti)
-Per garantire la fluidità del servizio, a tutti gli Agenti è permesso riassegnare un ticket a un altro Team se individuano un errore di instradamento (sia che provenga da un Trigger, sia da una creazione manuale).
-Tracciabilità: Quando un Agente sposta un ticket, è obbligatorio inserire una Nota Interna che motivi lo spostamento. Questo garantisce che il Capo Team (o l'Amministratore) possa monitorare la correttezza delle riassegnazioni.
-Visibilità nel Team di Destinazione: Il ticket riassegnato appare nella coda del nuovo Team. Viene visualizzato con un indicatore visivo (es. un tag o un'icona) che ne segnala la provenienza da un altro reparto.
-7. Moduli applicativi (Aggiornata)
-Pannello Amministrazione (Backend): L'interfaccia usata solo dagli Amministratori per configurare tutto quanto descritto nelle sezioni 3, 5 e 6. Questo modulo non include la possibilità di visualizzare o modificare singoli ticket operativi.
-Pannello Agente (Backend): L'interfaccia di lavoro quotidiana per Agenti e Capi Team. Mostra le "Viste" e le "Code" dei ticket. Qui si visualizza, si risponde e si risolve il ticket.
-Portale Clienti (Front End): L'area con login per i Clienti Finali (Utenti B2C e B2B). Permette di creare nuovi ticket (con i campi Categoria) e di visualizzare lo storico (con la logica di visibilità B2B/Premium).
+### 4.2 Stati del Ticket e Regole di Transizione
 
+| Stato | Descrizione | Regola Aggiuntiva |
+| :--- | :--- | :--- |
+| **Nuovo** | Appena creato, in attesa di classificazione/assegnazione. | - |
+| **Aperto** | Assegnato a un Agente, in lavorazione attiva. | - |
+| **In Attesa** | In attesa di risposta/azione del cliente (**l'SLA si ferma**). | Chiusura automatica dopo X giorni se il cliente non risponde. |
+| **Risolto** | L'Agente ha fornito la soluzione. | Se il cliente risponde, lo stato torna automaticamente su **Aperto (Riapertura)**. |
+| **Chiuso** | Il caso è archiviato (spesso automaticamente dopo X giorni da "Risolto"). | Se il cliente risponde, il sistema deve notificare l'utente di **aprire un nuovo ticket (Follow-up)**. |
 
+### 4.3 Classificazione Strutturata (Routing)
 
+Per l'instradamento automatico, la creazione del ticket dal Portale Clienti richiede campi obbligatori:
+
+* **Categoria:** Macro-argomento (es. "Supporto Tecnico").
+* **Sotto-Categoria:** Dettaglio dinamico in base alla Categoria (es. "Reset Password").
+
+#### Fallback di Sicurezza (Triage)
+L'opzione "**Altro / Non Specificato**" in Categoria instrada il ticket a una coda speciale chiamata **Triage**, dove un Agente dedicato ne completa manualmente la classificazione.
+
+---
+
+## 5. 🤖 Automazione del Sistema
+
+L'automazione garantisce efficienza e il rispetto degli SLA. Si basa su tre tipi di logiche:
+
+| Nome Regola | Tipo di Esecuzione | Scopo Principale | Esempio (Logica IF/THEN) |
+| :--- | :--- | :--- | :--- |
+| **Trigger** | Istantanea (Su creazione/aggiornamento) | Instradamento e Prioritizzazione immediata. | `SE Categoria = "Fatturazione" ALLORA Assegna a Team "Amministrazione"` |
+| **Automazione** | Basata sul Tempo (A intervalli regolari) | Monitoraggio SLA ed Escalation. | `SE Stato = "Aperto" E Ore Trascorse > X ALLORA Notifica Capo Team` |
+| **Macro** | Manuale (Azione 1-clic dell'Agente) | Efficienza e Risposte Standard. | **Macro "Dati Mancanti":** `Imposta Stato = "In Attesa" E Invia risposta predefinita` |
+
+---
+
+## 6. 🧑‍💻 Il Personale di Supporto (Tenant)
+
+### 6.1 Team
+
+I **Team** sono l'unità fondamentale di assegnazione (es. "Supporto Livello 1"). Gli Agenti lavorano estraendo i ticket dalle code del proprio Team.
+
+### 6.2 Ruoli Gerarchici
+
+| Ruolo | Funzionalità e Permessi | Accesso ai Ticket | Accesso Configurazione |
+| :--- | :--- | :--- | :--- |
+| **Agente** | Operatore quotidiano, risponde ai clienti, usa le Macro. | Lavora sui ticket assegnati al suo Team. | **No** |
+| **Capo Team** | Fa tutto ciò che fa un Agente, più supervisione operativa del Team. Riceve notifiche di Escalation. | Vede tutti i ticket del suo Team, può riassegnare internamente. | **No** |
+| **Amministratore (Admin)** | Configura l'applicazione (Team, SLA, Automazioni, Organizzazioni). | **Non può lavorare sui ticket** né modificarne lo stato. | **Sì (Totale)** |
+
+### 6.3 Gestione Flusso Errori (Riassegnazione)
+
+* **Permesso Agenti:** A tutti gli Agenti è permesso riassegnare un ticket verso un altro Team in caso di errore di instradamento.
+* **Tracciabilità:** Ogni riassegnazione richiede l'inserimento obbligatorio di una **Nota Interna** per la tracciabilità.
+* **Visibilità Destinazione:** Il ticket appare nella coda del nuovo Team con un **indicatore visivo** della sua provenienza (es. "Riassegnato da Fatturazione").
+
+---
+
+## 7. 💻 Moduli Applicativi (Interfacce Utente)
+
+La piattaforma si compone di tre interfacce principali:
+
+1.  **Pannello Amministrazione (Backend):**
+    * **Utenti:** Solo l'**Amministratore** (Tenant Admin).
+    * **Funzione:** Configurazione completa del sistema (SLA, Automazioni, Team, Clienti). **Non gestisce i singoli ticket operativi.**
+2.  **Pannello Agente (Backend):**
+    * **Utenti:** **Agenti** e **Capi Team**.
+    * **Funzione:** Interfaccia di lavoro quotidiana. Visualizzazione, risposta, risoluzione e gestione degli stati dei ticket (Viste e Code).
+3.  **Portale Clienti (Front End):**
+    * **Utenti:** **Clienti Finali** (Utenti B2C e B2B).
+    * **Funzione:** Creazione nuovi ticket (con Classificazione Categoria/Sotto-Categoria) e consultazione dello storico personale/Organizzazione.
