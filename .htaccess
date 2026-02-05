@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+    #Serve per reindirizzare tutto alla cartella public
+
+    RewriteEngine On 
+    #Se il dominio non c'è inserito niente manda alla cartella public
+    RewriteRule ^$ public/ [L] 
+
+    #Se dopo il dominio c'è inserito qualcosa inseriscilo a $1
+    RewriteRule ^(.*)$ public/$1 [L]
+
+    #la '[L]' sta per last se quella rule si verifica allaro ferma l'htaccess
+</IfModule>
+

@@ -1,0 +1,17 @@
+{
+    "name": "gamba/anh-ticket",
+    "autoload": {
+        "psr-4": {
+            "Gamba\\AnhTicket\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Daniele Gamba",
+            "email": "gamba.daniele.studente@itispaleocapa.it"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^7.0"
+    }
+}

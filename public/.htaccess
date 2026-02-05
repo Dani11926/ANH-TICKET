@@ -1,0 +1,16 @@
+<IfModule mod_rewrite.c>
+    #Obbliga Apache a seguire le regole impostate da me, non prende inziativa
+    Options -Multiviews
+    RewriteEngine On
+    #Definisce la base da cui partono tutti i percorsi relativi, sei fisicamente dentro la cartella
+    RewriteBase /ANH-TICKET/public
+    #Se la cartella esiste restituisci quella cartella
+    RewriteCond %{REQUEST_FILENAME} !-d
+    #Se il file esiste allora restituisci quel file
+    RewriteCond %{REQUEST_FILENAME} !-f
+
+    #Qualsiasi cosa dopo il public/ lo prendi e lo inserisci nell'url, che poi verra preso in una GET
+    RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+
+    #[QSA] Se l'utente inserisce una query string non viene perso, ma viene passato a PHP
+</IfModule>

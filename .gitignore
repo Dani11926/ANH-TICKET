@@ -1,0 +1,60 @@
+vendor/
+**/config/config.php 
+!**/config/config.example.php
+
+============================================
+SISTEMA OPERATIVO E IDE
+============================================
+Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+Linux
+*~
+.directory
+
+VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+PhpStorm
+.idea/
+
+============================================
+LOG E FILE TEMPORANEI
+============================================
+Log files
+*.log
+logs/
+.log.
+
+File temporanei
+tmp/
+temp/
+*.tmp
+*.cache
+*.swp
+*.swo
+*~
+
+============================================
+BACKUP E FILE DI SVILUPPO
+============================================
+Backup
+*.bak
+*.backup
+*.old
+
+SQL dumps (se contengono dati sensibili)
+*.sql
+*.sqlite
+*.db
